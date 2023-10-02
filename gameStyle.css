@@ -1,0 +1,31 @@
+#opponents{
+	width: 100%;
+	display: flex;
+	justify-content: space-around;
+}
+
+button, input{
+	width: 100px;
+	box-sizing: border-box;
+	text-align: center;
+}
+
+#controls{
+	width: 100%;
+	display: flex;
+	flex-flow: column wrap;
+	align-content: center;
+}
+
+#forfeit{
+	background: red;
+	width:300px;
+	font-size: large;
+}
+
+#player{
+	width: 100%;
+	text-align: center;
+	font-size: larger;
+}
+
