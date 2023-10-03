@@ -1,4 +1,4 @@
-# cs4241-a4
+# cs4241-final
 
 call/bet are interchangeable here  
 data storage: current call, current player, each player's dice info (rolls, and lost dice)  
