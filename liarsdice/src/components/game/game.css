@@ -27,6 +27,11 @@ body {
   margin: 0 5px;
 }
 
+.opponent img {
+  max-width: 50px; /* Adjust the maximum width as needed */
+  max-height: 50px; /* Adjust the maximum height as needed */
+}
+
 #controls {
   width: 100%;
   display: flex;

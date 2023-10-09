@@ -10,15 +10,17 @@ const Game = () => {
 
   const [playerDice, setPlayerDice] = useState([]);
   const [previousCall, setPreviousCall] = useState([1, 1]);
+  const [isGameStarted, setIsGameStarted] = useState(false);
 
   useEffect(() => {
-    roundStart();
+    if (numPlayers > 1) {
+      setIsGameStarted(true);
+      roundStart();
+    }
   }, []);
 
   const roundStart = () => {
     // Your existing roundStart logic here
-
-    // For example, setting playerDice using React state
     const dice = Array.from(
       { length: numDice },
       () => 1 + Math.floor(Math.random() * dieSize)
@@ -28,8 +30,6 @@ const Game = () => {
 
   const increment = (field, value) => {
     // Your existing increment logic here
-
-    // For example, incrementing count using React state
     if (field === "count") {
       setPreviousCall([previousCall[0] + 1, previousCall[1]]);
     }
@@ -37,10 +37,22 @@ const Game = () => {
 
   return (
     <div>
+      {numPlayers === 1 && !isGameStarted && (
+        <button onClick={() => setIsGameStarted(true)}>Start Game</button>
+      )}
       <div id="opponents">
         {Array.from({ length: numPlayers - 1 }, (_, i) => (
           <div key={i} className="opponent" id={`opponent${i}`}>
-            {/* Your opponent information goes here */}
+            {/* Placeholder image for opponent's dice */}
+            <img
+              src={opponentLostDice[i] < numDice ? "/dice.png" : "/blank.png"}
+              alt={`Opponent ${i + 1}'s Dice`}
+            />
+            <div>
+              Dice in play: {numDice - opponentLostDice[i]}
+              <br />
+              Lost Dice: {opponentLostDice[i]}
+            </div>
           </div>
         ))}
       </div>
@@ -49,7 +61,6 @@ const Game = () => {
         Place your Call:
         <br />
         <div id="call">
-          {/* Your call input and buttons go here */}
           <button onClick={() => increment("count", 1)}>/\</button>
           <button onClick={() => increment("dieSide", 1)}>/\</button>
           <br />
@@ -68,7 +79,7 @@ const Game = () => {
         <button id="forfeit">Forfeit</button>
       </div>
       <br />
-      <div id="player">Your dice: {playerDice.toString()}</div>
+      <div id="player">Your dice: {playerDice.join(", ")}</div>
     </div>
   );
 };
