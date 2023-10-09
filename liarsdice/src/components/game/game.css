@@ -1,0 +1,74 @@
+/* src/components/Game/game.css */
+
+body {
+  font-family: "Arial", sans-serif;
+  background-color: #f0f0f0;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.container {
+  text-align: center;
+}
+
+#opponents {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+
+.opponent {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 0 5px;
+}
+
+#controls {
+  width: 100%;
+  display: flex;
+  flex-flow: column wrap;
+  align-content: center;
+  text-align: center;
+}
+
+#call {
+  margin-bottom: 10px;
+}
+
+button,
+input {
+  width: 100px;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+button {
+  font-size: 16px;
+  padding: 12px 24px; /* Adjusted padding */
+  margin: 10px; /* Adjusted margin */
+  cursor: pointer;
+  background-color: #4caf50; /* Green background color */
+  color: white; /* White text color */
+  border: none;
+  border-radius: 4px;
+}
+
+button:hover {
+  background-color: #45a049; /* Darker green on hover */
+}
+
+#forfeit {
+  background: red;
+  width: 300px;
+  font-size: large;
+}
+
+#player {
+  width: 100%;
+  text-align: center;
+  font-size: larger;
+}
