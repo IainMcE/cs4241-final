@@ -1,8 +1,7 @@
-// src/components/Game/Game.js
-
-import React, { useEffect, useState } from "react";
-import "./game.css";
-import { createDice } from "./dice";
+import React, { useEffect, useState, useRef } from "react";
+import { makeDie } from "./dice";
+import * as THREE from "https://cdn.skypack.dev/three@0.136";
+import * as CANNON from "https://cdn.skypack.dev/cannon-es";
 
 const Game = () => {
   const numPlayers = 5;
@@ -14,11 +13,57 @@ const Game = () => {
   const [previousCall, setPreviousCall] = useState([1, 1]);
   const [isGameStarted, setIsGameStarted] = useState(false);
 
-  // Destructuring the createDice function
-  const { initializeDice, waitGetRoll, checkRolls, render } = createDice(
-    numDice,
-    dieSize
+  const threeContainerRef = useRef(null);
+  const [scene, setScene] = useState(new THREE.Scene());
+  const [camera, setCamera] = useState(
+    new THREE.PerspectiveCamera(
+      75,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      1000
+    )
   );
+  const [renderer, setRenderer] = useState(new THREE.WebGLRenderer());
+
+  const physicsWorld = new CANNON.World({
+    gravity: new CANNON.Vec3(0, -50, 0),
+    allowSleep: true,
+  });
+  physicsWorld.defaultContactMaterial.restitution = 0.3;
+
+  useEffect(() => {
+    const initializeThree = () => {
+      // Set up camera
+      camera.position.z = 5;
+
+      // Set up renderer
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      threeContainerRef.current.appendChild(renderer.domElement);
+
+      // Create and add dice to the scene
+      for (let i = 0; i < numDice; i++) {
+        const { mesh, body } = makeDie(i);
+        scene.add(mesh);
+        physicsWorld.addBody(body);
+      }
+
+      // Render the initial scene
+      render();
+    };
+
+    initializeThree();
+
+    // Cleanup function
+    return () => {
+      // Clean up Three.js resources
+      scene.children.forEach((object) => {
+        if (object instanceof THREE.Mesh) {
+          scene.remove(object);
+        }
+      });
+      renderer.dispose();
+    };
+  }, []); // Empty dependency array to run once when the component mounts
 
   useEffect(() => {
     if (numPlayers > 1 && !isGameStarted) {
@@ -27,21 +72,7 @@ const Game = () => {
     }
   }, [numPlayers, isGameStarted]);
 
-  useEffect(() => {
-    // Initialize dice when the component mounts
-    initializeDice(setPlayerDice);
-  }, []); // Empty dependency array to run once when component mounts
-
   const roundStart = () => {
-    // Your existing roundStart logic here
-
-    // If you need to perform additional logic specific to your game, do it here
-    // ...
-
-    // Initialize the player's dice using the dice script
-    initializeDice(setPlayerDice);
-
-    // Reset previous call and update buttons
     setPreviousCall([1, 1]);
     updateButtons();
   };
@@ -66,6 +97,11 @@ const Game = () => {
   const updateButtons = () => {
     // Your existing button update logic here
     // ...
+  };
+
+  const render = () => {
+    // Your rendering logic here
+    renderer.render(scene, camera);
   };
 
   return (
@@ -120,6 +156,9 @@ const Game = () => {
       </div>
       <br />
       <div id="player">Your dice: {playerDice.join(", ")}</div>
+
+      {/* Container for Three.js scene */}
+      <div ref={threeContainerRef} id="three-container" />
     </div>
   );
 };

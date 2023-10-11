@@ -25,39 +25,10 @@ let physicsWorld;
 let Dice = [];
 let roll = [];
 
-export function createDice(numDice, dieSize) {
-  let Dice = [];
-  let roll = [];
-
-  function initializeDice(setPlayerDice) {
-    roll[numDice - 1] = 0;
-    roll.fill(0, 0, numDice);
-
-    // Your existing initialization logic here
-
-    // Set player's dice
-    const playerDice = [];
-    for (let i = 0; i < numDice; i++) {
-      playerDice.push(getRandomDieValue());
-    }
-    setPlayerDice(playerDice);
-
-    console.log("Player's Dice:", playerDice);
-  }
-
-  // ... (rest of your existing functions)
-
-  return { Dice, roll, initializeDice, waitGetRoll, checkRolls, render };
-}
-
-// Helper function to get a random die value
-function getRandomDieValue() {
-  return Math.floor(Math.random() * 6) + 1;
-}
-
 window.addEventListener("DOMContentLoaded", async () => {
   initialize();
 });
+
 function initialize() {
   roll[numDice - 1] = 0;
   roll.fill(0, 0, numDice);
@@ -300,3 +271,4 @@ function render() {
   renderer.render(scene, camera);
   requestAnimationFrame(render);
 }
+export { makeDie };
