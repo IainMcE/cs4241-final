@@ -8,6 +8,7 @@ import * as CANNON from 'https://cdn.skypack.dev/cannon-es';
 const numDice = 5;
 const dieSize = 4;	//independent from number of sides, but physical size of the dice
 const setHeight = 500;
+let container = document.getElementById("player");
 
 const scene = new THREE.Scene();
 
@@ -30,18 +31,14 @@ window.addEventListener('DOMContentLoaded', async () => {
 });
 
 function initialize() {
-	roll[numDice-1] = 0;
-	roll.fill(0, 0, numDice)
-	console.log(roll);
-
 	let light = new THREE.AmbientLight(0xFFFFFF);
 	scene.add(light);
 	scene.background = new THREE.Color(0xFFFFFF);
 
 	renderer.shadowMap.enabled = true;
 	renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-	renderer.setPixelRatio(window.devicePixelRatio);
-	renderer.setSize(window.innerWidth, setHeight);
+	renderer.setPixelRatio(container.devicePixelRatio);
+	renderer.setSize(container.scrollWidth, setHeight);
 	document.body.appendChild(renderer.domElement);
 
 	physicsWorld = new CANNON.World({gravity: new CANNON.Vec3(0, -50, 0), allowSleep: true});
@@ -54,22 +51,23 @@ function initialize() {
 	setRollBox();
 	for(let i = 0; i<numDice; i++){
 		Dice.push(makeDie(i));
-		Dice[i].body.allowSleep = true;
 		waitGetRoll(i);
 	}
+	document.getElementById("reroll").onclick = rollDice;
+	rollDice();
 
 	render();
 }
 function WindowResize() {
-	camera.aspect = window.innerWidth / window.innerHeight;
+	camera.aspect = container.scrollWidth / setHeight;
 	camera.updateProjectionMatrix();
-	renderer.setSize(window.innerWidth, window.innerHeight);
+	renderer.setSize(container.scrollWidth, setHeight);
 }
 
 function setRollBox() {
 	//container box
 	const ground = new THREE.Mesh(
-		new THREE.PlaneGeometry(70, 30),
+		new THREE.PlaneGeometry(150, 30),
 		new THREE.MeshStandardMaterial({color: 0x404040}));
 	ground.castShadow = false;
 	ground.receiveShadow = true;
@@ -160,7 +158,6 @@ function makeDie(i){
 	]
 
 	const mesh = new THREE.Mesh(new THREE.BoxGeometry(dieSize, dieSize, dieSize), dieFaces);
-	mesh.rotation.set(2 * Math.PI * Math.random(), 0, 2 * Math.PI * Math.random())
 	mesh.castShadow = true;
 	mesh.receiveShadow = true;
 	scene.add(mesh);
@@ -169,7 +166,6 @@ function makeDie(i){
 	const body = new CANNON.Body({
 		mass: 1, shape: new CANNON.Box(new CANNON.Vec3(dieSize/2, dieSize/2, dieSize/2)), sleepTimeLimit: 0.1
 	});
-	body.quaternion.copy(mesh.quaternion);
 	body.position = new CANNON.Vec3(0, 10+(5*i), 0);
 	mesh.position.copy(body.position);
 	physicsWorld.addBody(body);
@@ -217,8 +213,26 @@ function checkRolls(){
 	for(let i = 0; i<numDice; i++){
 		if(roll[i]===0){return}
 	}
+	document.getElementById("reroll").disabled = true;
 	//TODO send Dice
 	console.log(roll);
+}
+
+function rollDice(){
+	roll[numDice-1] = 0;
+	roll.fill(0, 0, numDice)
+
+	for(let i = 0; i<numDice; i++){
+		Dice[i].body.position = new CANNON.Vec3(0, 10+(5*i), 0);
+		Dice[i].mesh.position.copy(Dice[i].body.position);
+		Dice[i].mesh.rotation.set(2 * Math.PI * Math.random(), 0, 2 * Math.PI * Math.random());
+		Dice[i].body.quaternion.copy(Dice[i].mesh.quaternion);
+		Dice[i].body.applyImpulse(
+			new CANNON.Vec3(0,0,0),
+			new CANNON.Vec3(0,0,0)
+		);
+		Dice[i].body.allowSleep = true;
+	}
 }
 
 function render() {

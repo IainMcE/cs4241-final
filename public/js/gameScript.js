@@ -3,7 +3,7 @@ const opponentLostDice = [0,0,0,0];
 const numDice = 5;
 const dieSize = 6;
 const playerDice = [];
-const previousCall = [1,1];
+const previousCall = [0,1];
 
 function roundStart(){
 	//set opponents
@@ -13,10 +13,6 @@ function roundStart(){
 			"<br>Lost Dice: "+opponentLostDice[i];
 	}
 	//set self
-	for(let i  =0; i<numDice; i++){
-		playerDice[i] = 1+Math.floor(Math.random()*dieSize)
-	}
-	document.getElementById("player").innerHTML = "Your dice: "+playerDice.toString();
 	document.getElementById("count").value = previousCall[0]+1;
 	document.getElementById("dieSide").value = previousCall[1];
 }
@@ -34,10 +30,10 @@ function updateButtons(){
 	let currNum = document.getElementById('count').value;
 	let currSide = document.getElementById('dieSide').value;
 	//liars dice: raising the call
-		//you may increase the number of dice, and keep the die side the same
-		//you may increase the die side, and set any number of dice
-		//you cannot decrease the die side
-		//you cannot decrease the number without increasing the die side.
+	//you may increase the number of dice, and keep the die side the same
+	//you may increase the die side, and set any number of dice
+	//you cannot decrease the die side
+	//you cannot decrease the number without increasing the die side.
 	//die side: up greys out when maxed
 	document.getElementById('dieSideUp').disabled = currSide >= dieSize;
 	//down greys out when equal to current call
