@@ -1,5 +1,5 @@
-const express = require("express");
-const cors = require("cors");
+import express from 'express';
+import cors from 'cors';
 
 const app = express();
 
@@ -18,7 +18,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // simple route
 app.get('/', (request, response) => {
-    dir = 'public/'
+    const dir = 'public/'
     const filename = dir + request.url.slice( 1 ) 
   
     if( request.url === '/' ) {
@@ -32,9 +32,10 @@ app.get('/', (request, response) => {
     }
 });
 
-const mime = require( 'mime' );
-const http = require( 'http' );
-const fs   = require( 'fs' );
+import mime from 'mime';
+import http from 'http';
+import fs from 'fs';
+
 const sendFile = function( response, filename ) {
     const type = mime.getType( filename ) 
  
@@ -57,7 +58,9 @@ const sendFile = function( response, filename ) {
     })
  }
 
-require('./app/routes/game.routes')(app);
+ import router from './app/routes/game.routes.js'
+ app.use('/', router);
+ 
 
 // set port, listen for requests
 const PORT = process.env.PORT || 3000;

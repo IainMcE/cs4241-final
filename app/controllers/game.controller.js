@@ -1,11 +1,7 @@
-//const db = require("../models");
-//const Character = db.character;
-
 var players = [];
 var summary = [];
 
-
-exports.init = (req, res) => {
+export function init(req, res) {
     let numPlayers = parseInt(req.body.numPlayers)
     let numDice = parseInt(req.body.numDice);
 
@@ -13,7 +9,7 @@ exports.init = (req, res) => {
         players[i] = numDice + 0
     }
     res.send({ message: "Game initialized successfully!" });
-    Element = {}
+    var Element = {}
     Element.action = 'Start Game'
     Element.players = numPlayers
     Element.numDice = numDice
@@ -21,7 +17,7 @@ exports.init = (req, res) => {
     return;
 }
 
-exports.roundWinner = (req, res) => {
+export function roundWinner(req, res) {
     let diceValues = req.body.diceValues
     let bid   = parseInt(req.body.bid)
     let bidder = parseInt(req.body.bidderId)
@@ -60,7 +56,7 @@ exports.roundWinner = (req, res) => {
     const jsonContent = JSON.stringify({"winner":winner})
     res.writeHead( 200, "OK", {'Content-Type': 'text/plain' })
     res.end(jsonContent)
-    Element = {}
+    var Element = {}
     Element.action = 'End of Round'
     Element.winner = winner
     Element.loser = loser
@@ -68,7 +64,7 @@ exports.roundWinner = (req, res) => {
     return;
 }
 
-exports.roundChallenge = (req, res) => {
+export function roundChallenge (req, res) {
     let diceValues = req.body.diceValues
     let bid   = parseInt(req.body.bid)
     let bidFace = req.body.bidFace
@@ -97,7 +93,7 @@ exports.roundChallenge = (req, res) => {
         const jsonContent = JSON.stringify({"winner":winner})
         res.writeHead( 200, "OK", {'Content-Type': 'text/plain' })
         res.end(jsonContent)
-        Element = {}
+        var Element = {}
         Element.action = 'End of Challenge Round'
         Element.bidder = bidder
         Element.challenger = challenger
@@ -108,7 +104,7 @@ exports.roundChallenge = (req, res) => {
     }
 }
 
-exports.status = (req, res) => {
+export function status(req, res) {
 
     res.writeHead( 200, "OK", {'Content-Type': 'text/plain' })
     const jsonContent = JSON.stringify(players);
@@ -116,7 +112,7 @@ exports.status = (req, res) => {
     return;
 }
 
-exports.summary = (req, res) => {
+export function gameSummary (req, res) {
 
     res.writeHead( 200, "OK", {'Content-Type': 'text/plain' })
     const jsonContent = JSON.stringify(summary);

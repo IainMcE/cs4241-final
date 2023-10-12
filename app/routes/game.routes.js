@@ -1,8 +1,15 @@
 
-const controller = require("../controllers/game.controller");
+import express from 'express';
+import {roundWinner} from '../controllers/game.controller.js';
+import {roundChallenge} from '../controllers/game.controller.js';
+import {init} from '../controllers/game.controller.js';
+import {status} from '../controllers/game.controller.js';
+import {gameSummary} from '../controllers/game.controller.js';
 
-module.exports = function(app) {
-  app.use(function(req, res, next) {
+
+const router = express.Router()
+
+router.use(function(req, res, next) {
     res.header(
       "Access-Control-Allow-Headers",
       "Origin, Content-Type, Accept"
@@ -10,9 +17,10 @@ module.exports = function(app) {
     next();
   });
 
-  app.post("/api/game/roundWinner", controller.roundWinner);
-  app.post("/api/game/roundChallenge", controller.roundChallenge);
-  app.post("/api/game/init", controller.init);
-  app.get("/api/game/status", controller.status);
-  app.get("/api/game/summary", controller.summary);
-};
+router.post("/api/game/roundWinner", roundWinner);
+router.post("/api/game/roundChallenge", roundChallenge);
+router.post("/api/game/init", init);
+router.get("/api/game/status", status);
+router.get("/api/game/summary", gameSummary);
+
+export default router;
