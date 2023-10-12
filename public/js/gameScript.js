@@ -1,5 +1,5 @@
 const numPlayers = 5;
-const opponentLostDice = [0,0,0,0];
+const opponentLostDice = [2,5,3,1];
 const numDice = 5;
 const dieSize = 6;
 const playerDice = [];
@@ -9,8 +9,9 @@ function roundStart(){
 	//set opponents
 	for(let i = 0; i<numPlayers-1; i++){
 		let opponentField = document.getElementById("opponent"+i);
-		opponentField.innerHTML = "Dice in play: "+(numDice-opponentLostDice[i])+
-			"<br>Lost Dice: "+opponentLostDice[i];
+		let dieString = "./resources/"+(numDice-opponentLostDice[i])+".png";
+		opponentField.innerHTML = "Dice in play: <br/><img src='"+dieString+
+			"' height='75px'> <br>Lost Dice: "+opponentLostDice[i];
 	}
 	//set self
 	document.getElementById("count").value = previousCall[0]+1;
@@ -40,7 +41,7 @@ function updateButtons(){
 	document.getElementById('dieSideDown').disabled = currSide <= previousCall[1];
 	//count: up never greys out. make as absurd a call as you want
 	//down: greys out when both count and side are equal to current call
-	document.getElementById('countDown').disabled = (currNum<=previousCall[0]+1 && currSide <= previousCall[1]);
+	document.getElementById('countDown').disabled = (currNum<=previousCall[0]+1 && currSide <= previousCall[1])||currNum==1;
 	//work around: raise die side, lower count, lower die side
 	//prevention:
 	if(currSide <= previousCall[1] && currNum<=previousCall[0]){

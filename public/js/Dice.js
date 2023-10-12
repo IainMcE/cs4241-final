@@ -214,6 +214,7 @@ function checkRolls(){
 	for(let i = 0; i<numDice; i++){
 		if(roll[i]===0){return}
 	}
+	roll.sort();
 	document.getElementById("reroll").disabled = true;
 	showControls();
 	//TODO send Dice
@@ -229,9 +230,10 @@ function rollDice(){
 		Dice[i].mesh.position.copy(Dice[i].body.position);
 		Dice[i].mesh.rotation.set(2 * Math.PI * Math.random(), 0, 2 * Math.PI * Math.random());
 		Dice[i].body.quaternion.copy(Dice[i].mesh.quaternion);
+		const force = 20 + 5 * Math.random();
 		Dice[i].body.applyImpulse(
-			new CANNON.Vec3(0,0,0),
-			new CANNON.Vec3(0,0,0)
+			new CANNON.Vec3((2*Math.random()-1)*force,0.5*force,(2*Math.random()-1)*force),
+			new CANNON.Vec3(0.2,0,0.2)
 		);
 		Dice[i].body.allowSleep = true;
 	}
