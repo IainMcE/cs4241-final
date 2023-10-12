@@ -1,10 +1,14 @@
 body {
   margin: 0;
   padding: 0;
+  height: 100vh;
   font-family: Arial, sans-serif;
+  display: grid;
+  grid-template: 1fr 4fr 4fr/97%;
 }
 
 #opponents {
+  grid-row: 1;
   display: flex;
   justify-content: space-between;
   width: 100%;
@@ -20,14 +24,17 @@ body {
 }
 
 #main-container {
+  grid-area:2/1/2/1;
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
   margin-top: 0.5rem;
+  visibility: hidden;
+  z-index: -1;
 }
 
-#reroll-container {
+#results-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -70,7 +77,12 @@ input {
 }
 
 #player {
+  position: fixed;
+  left: 0;
+  right:0;
+  bottom:0;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;

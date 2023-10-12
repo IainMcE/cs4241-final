@@ -7,17 +7,18 @@ import * as CANNON from 'https://cdn.skypack.dev/cannon-es';
 
 const numDice = 5;
 const dieSize = 4;	//independent from number of sides, but physical size of the dice
-const setHeight = 500;
+const setHeight = 475;
 let container = document.getElementById("player");
 
 const scene = new THREE.Scene();
 
-const fov = 60;
+const fov = 47;
 const aspect = 1920 / setHeight;
 const near = 1.0;
-const far = 1000.0;
+const far = 100.0;
 const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-camera.position.set(0, 20, 50);
+camera.position.set(0, 35, 45);
+camera.lookAt(new THREE.Vector3(0, 15, 5));
 
 const renderer = new THREE.WebGLRenderer({antialias:true});
 
@@ -27,6 +28,7 @@ let Dice = [];
 let roll = [];
 
 window.addEventListener('DOMContentLoaded', async () => {
+	document.getElementById("reroll").onclick = rollDice;
 	initialize();
 });
 
@@ -39,7 +41,7 @@ function initialize() {
 	renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 	renderer.setPixelRatio(container.devicePixelRatio);
 	renderer.setSize(container.scrollWidth, setHeight);
-	document.body.appendChild(renderer.domElement);
+	container.appendChild(renderer.domElement);
 
 	physicsWorld = new CANNON.World({gravity: new CANNON.Vec3(0, -50, 0), allowSleep: true});
 	physicsWorld.defaultContactMaterial.restitution = 0.3;
@@ -53,7 +55,6 @@ function initialize() {
 		Dice.push(makeDie(i));
 		waitGetRoll(i);
 	}
-	document.getElementById("reroll").onclick = rollDice;
 	rollDice();
 
 	render();
@@ -84,7 +85,7 @@ function setRollBox() {
 	const leftWall = new THREE.Mesh(
 		new THREE.PlaneGeometry(30, 40),
 		new THREE.MeshStandardMaterial().transparent = true);
-	leftWall.position.set(-35, 20, 0);
+	leftWall.position.set(-75, 20, 0);
 	leftWall.castShadow = false;
 	leftWall.receiveShadow = true;
 	leftWall.quaternion.setFromAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI * .5);
@@ -100,7 +101,7 @@ function setRollBox() {
 	const rightWall = new THREE.Mesh(
 		new THREE.PlaneGeometry(30, 40),
 		new THREE.MeshStandardMaterial().transparent = true);
-	rightWall.position.set(35, 20, 0);
+	rightWall.position.set(75, 20, 0);
 	rightWall.castShadow = false;
 	rightWall.receiveShadow = true;
 	rightWall.quaternion.setFromAxisAngle(new THREE.Vector3(0, -1, 0), Math.PI * .5);
@@ -114,7 +115,7 @@ function setRollBox() {
 	physicsWorld.addBody(rightWallBody);
 
 	const backWall = new THREE.Mesh(
-		new THREE.PlaneGeometry(40, 70),
+		new THREE.PlaneGeometry(40, 150),
 		new THREE.MeshStandardMaterial().transparent = true);
 	backWall.position.set(0, 20, -15);
 	backWall.castShadow = false;
@@ -129,21 +130,21 @@ function setRollBox() {
 	backWallBody.quaternion.copy(backWall.quaternion);
 	physicsWorld.addBody(backWallBody);
 
-	// const frontWall = new THREE.Mesh(
-	// 	new THREE.PlaneGeometry(40, 70),
-	// 	new THREE.MeshStandardMaterial().transparent = true);
-	// frontWall.position.set(0, 20, 15);
-	// frontWall.castShadow = false;
-	// frontWall.receiveShadow = true;
-	// frontWall.quaternion.setFromAxisAngle(new THREE.Vector3(0, 0, -1), Math.PI * .5);
-	// scene.add(frontWall);
-	// const frontWallBody = new CANNON.Body({
-	// 	type: CANNON.Body.STATIC,
-	// 	shape: new CANNON.Plane(),
-	// });
-	// frontWallBody.position.copy(frontWall.position);
-	// frontWallBody.quaternion.copy(frontWall.quaternion);
-	// physicsWorld.addBody(frontWallBody);
+	const frontWall = new THREE.Mesh(
+		new THREE.BoxGeometry(40, 150, 2),
+		new THREE.MeshStandardMaterial().transparent = true);
+	frontWall.position.set(0, 20, 16);
+	frontWall.castShadow = false;
+	frontWall.receiveShadow = true;
+	frontWall.quaternion.setFromAxisAngle(new THREE.Vector3(0, 0, -1), Math.PI * .5);
+	scene.add(frontWall);
+	const frontWallBody = new CANNON.Body({
+		type: CANNON.Body.STATIC,
+		shape: new CANNON.Box(new CANNON.Vec3(20, 75, 1))
+	});
+	frontWallBody.position.copy(frontWall.position);
+	frontWallBody.quaternion.copy(frontWall.quaternion);
+	physicsWorld.addBody(frontWallBody);
 }
 
 function makeDie(i){
@@ -214,8 +215,9 @@ function checkRolls(){
 		if(roll[i]===0){return}
 	}
 	document.getElementById("reroll").disabled = true;
+	showControls();
 	//TODO send Dice
-	console.log(roll);
+	document.getElementById("results").innerHTML = "Your roll: "+roll.toString();
 }
 
 function rollDice(){
@@ -245,4 +247,9 @@ function render() {
 
 	renderer.render(scene, camera);
 	requestAnimationFrame(render);
+}
+
+function showControls(){
+	document.getElementById("main-container").style.visibility = "visible";
+	document.getElementById("main-container").style.zIndex = "2";
 }
