@@ -1,31 +1,94 @@
-#opponents{
-	width: 100%;
-	display: flex;
-	justify-content: space-around;
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
 }
 
-button, input{
-	width: 100px;
-	box-sizing: border-box;
-	text-align: center;
+#opponents {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border-bottom: 2px solid #ccc;
 }
 
-#controls{
-	width: 100%;
-	display: flex;
-	flex-flow: column wrap;
-	align-content: center;
+.opponent {
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px dashed #ccc;
+  text-align: center;
 }
 
-#forfeit{
-	background: red;
-	width:300px;
-	font-size: large;
+#main-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-top: 0.5rem;
 }
 
-#player{
-	width: 100%;
-	text-align: center;
-	font-size: larger;
+#reroll-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 1rem;
 }
 
+#controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Horizontally centers content */
+  justify-content: center; /* Vertically centers content */
+  width: 60%; /* Adjust this value to your liking */
+  max-width: 500px; /* Prevents it from becoming too wide on large screens */
+  margin: 0 auto; /* Centers the box horizontally */
+  padding: 1rem; /* Adjust padding if needed */
+  border: 2px solid #ccc;
+  border-radius: 6px;
+  background-color: #fff;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  height: auto;
+}
+
+button,
+input {
+  width: 100px;
+  box-sizing: border-box;
+  text-align: center;
+  transition: all 0.2s ease-in-out;
+}
+
+#forfeit {
+  background: red;
+  width: 280px;
+  font-size: 1rem;
+  border: none;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+}
+
+#player {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 1.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 1rem;
+}
+
+button#reroll {
+  padding: 8px 18px;
+  border: none;
+  background-color: #4caf50;
+  color: white;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+button#reroll:hover {
+  background-color: #45a049;
+}
