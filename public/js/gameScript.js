@@ -6,6 +6,12 @@ const playerDice = [];
 const previousCall = [0,1];
 
 function roundStart(){
+	/*
+	 * How does client get data for all players?
+	 * If the player data is stored in the DB, do you need an API to get player data?
+	 * For example, getAllData will return a JSON with all players' data (GET)
+	 * getPlayerData with the player ID will return one player's data (POST)
+	 */
 	//set opponents
 	for(let i = 0; i<numPlayers-1; i++){
 		let opponentField = document.getElementById("opponent"+i);
@@ -48,5 +54,18 @@ function updateButtons(){
 		document.getElementById('count').value = previousCall[0]+1;
 	}
 
+	/*
+	 * After each player action, do you want the server to validate?
+	 * That means you need a POST api such as /api/game/playerMove with whatever you need to validate
+	 * This may not need to be stored in the DB, it can be stored in the server as long as the server knows when the round starts and ends.
+	 */
 	//TODO serverside validation: so long as either value is larger than the previous and die side is not smaller than the previous side, it is valid
 }
+
+/*
+ * Other questions:
+ * 1. Will the server api be called after each round?
+ * 2. How does the client know whether the player has won or lost a round?
+ * 3. How does the client know that a player has lost all dice?
+ * 4. Does the server need to assume the number of players as 5 and number of dice as 5?
+ */
