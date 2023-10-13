@@ -22,8 +22,7 @@ app.get('/', (request, response) => {
     const filename = dir + request.url.slice( 1 ) 
   
     if( request.url === '/' ) {
-        console.log("Returning game.html");
-      sendFile( response, 'public/game.html' )
+      sendFile( response, 'public/index.html' )
     } else if (request.url === '/results') { 
       //send appdata
     }
