@@ -92,3 +92,23 @@ button#reroll {
 button#reroll:hover {
   background-color: #45a049;
 }
+
+#instructions-link {
+  text-align: center;
+  margin-top: 20px; /* Adjust the margin as needed */
+}
+
+#instructions-link a {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #0074d9; /* Change to your desired background color */
+  color: #fff; /* Text color */
+  text-decoration: none;
+  border-radius: 4px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+#instructions-link a:hover {
+  background-color: #0056b3; /* Change to a darker shade for hover effect */
+}

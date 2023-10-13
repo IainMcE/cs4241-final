@@ -1,0 +1,72 @@
+/* Reset default margin and padding */
+body,
+h1,
+h2,
+p,
+ol,
+ul,
+li {
+  margin: 0;
+  padding: 0;
+}
+
+/* Set a background color and text color */
+body {
+  background-color: #f5f5f5; /* Adjust the background color as needed */
+  color: #333; /* Adjust the text color as needed */
+  font-family: Arial, sans-serif;
+}
+
+/* Style the header */
+header {
+  background-color: #0074d9; /* Header background color */
+  color: #fff; /* Header text color */
+  text-align: center;
+  padding: 20px 0;
+}
+
+/* Style the main content section */
+section {
+  background-color: #fff;
+  padding: 20px;
+  margin: 20px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Style headings */
+h1 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+h2 {
+  font-size: 20px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+/* Style paragraphs */
+p {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* Style ordered lists */
+ol {
+  font-size: 16px;
+  margin-left: 20px;
+}
+
+/* Style list items */
+li {
+  margin-bottom: 10px;
+}
+
+/* Style the footer */
+footer {
+  background-color: #333; /* Footer background color */
+  color: #fff; /* Footer text color */
+  text-align: center;
+  padding: 10px 0;
+}
