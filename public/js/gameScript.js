@@ -4,6 +4,24 @@ const numDice = 5;
 const dieSize = 6;
 const playerDice = [];
 const previousCall = [0,1];
+let playerID;
+
+function init(){
+	document.getElementById("challenge").style.visibility = 'hidden';
+	playerID = parseInt(sessionStorage.getItem("Id"));
+	//get numPlayers, and lostDice
+	roundStart();
+	//hide everything (controls, buttons)
+	// if(playerID===0){
+	// 	//show start game button
+	// 	let startButton = document.createElement('button');
+	// 	startButton.onclick = gameStateRoll;
+	// 	startButton.innerText = "Start the Game";
+	// 	document.getElementById("prevCall").append(startButton);
+	// }else{
+	// 	//busyWaitForRoll().then(r => {});
+	// }
+}
 
 function roundStart(){
 	/*
@@ -19,11 +37,39 @@ function roundStart(){
 		opponentField.innerHTML = "Dice in play: <br/><img src='"+dieString+
 			"' height='75px'> <br>Lost Dice: "+opponentLostDice[i];
 	}
+	startCall();
+}
+
+function startCall(){
+	if(previousCall[0]!==0){
+		let plural = '';
+		if(previousCall[0]>0) plural = 's';
+		document.getElementById("prevCall").innerHTML = "Previous call: "+previousCall[0]+" "+toWord(previousCall[1])+plural;
+		document.getElementById("challenge").style.visibility = 'visible';
+	}
 	//set self
 	document.getElementById("count").value = previousCall[0]+1;
 	document.getElementById("dieSide").value = previousCall[1];
 }
 
+function toWord(i){
+	switch (i){
+		case 1:
+			return "One";
+		case 2:
+			return "Two";
+		case 3:
+			return "Three";
+		case 4:
+			return "Four";
+		case 5:
+			return "Five";
+		case 6:
+			return "Six";
+		default:
+			return i;
+	}
+}
 function increment(field, positivity){
 	let numField = document.getElementById(field);
 	let result =  numField.value-0+positivity;

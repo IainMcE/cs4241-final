@@ -1,51 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Liar's Dice</title>
-    <script src="js/gameScript.js"></script>
-    <script type="module" src="js/Dice.js"></script>
-    <link rel="stylesheet" href="css/gameStyle.css" />
-  </head>
-  <body onload="roundStart()">
-    <div id="opponents">
-      <div class="opponent" id="opponent0"></div>
-      <div class="opponent" id="opponent1"></div>
-      <div class="opponent" id="opponent2"></div>
-      <div class="opponent" id="opponent3"></div>
+<head>
+  <meta charset="UTF-8" />
+  <title>Liar's Dice</title>
+  <script src="js/gameScript.js"></script>
+  <script type="module" src="js/Dice.js"></script>
+  <link rel="stylesheet" href="css/gameStyle.css" />
+</head>
+<body onload="init()">
+<div id="opponents">
+  <div class="opponent" id="opponent0"></div>
+  <div class="opponent" id="opponent1"></div>
+  <div class="opponent" id="opponent2"></div>
+  <div class="opponent" id="opponent3"></div>
+</div>
+<div id="main-container">
+  <div id="instructions-link">
+    <a href="instructions.html" target="_blank">Instructions</a>
+  </div>
+  <div id="prevCall">
+  </div>
+  <div id="controls">
+    <button id="challenge">Challenge the Previous Call</button><br/>
+    Place your Call:<br />
+    <div id="call">
+      <button id="countUp" onclick="increment('count', 1)">/\</button>
+      <button id="dieSideUp" onclick="increment('dieSide', 1)">/\</button>
+      <br />
+      <input id="count" disabled />
+      <input id="dieSide" disabled />
+      <button id="setCall">Place Call</button>
+      <br />
+      <button id="countDown" onclick="increment('count', -1)" disabled>\/</button>
+      <button id="dieSideDown" onclick="increment('dieSide', -1)" disabled>\/</button>
     </div>
-    <div id="main-container">
-      <div id="results-container">
-        <div id="results"></div>
-      </div>
-
-      <<<<<<< HEAD
-      <div id="controls">
-        Place your Call:<br />
-        <div id="call">
-          <button id="countUp" onclick="increment('count', 1)">/\</button>
-          <button id="dieSideUp" onclick="increment('dieSide', 1)">/\</button>
-          <br />
-          <input id="count" disabled />
-          <input id="dieSide" disabled />
-          <button id="setCall">Place Call</button>
-          <br />
-          <button id="countDown" onclick="increment('count', -1)" disabled>
-            \/
-          </button>
-          <button id="dieSideDown" onclick="increment('dieSide', -1)" disabled>
-            \/
-          </button>
-        </div>
-        <br />
-        <button id="forfeit">Forfeit</button>
-      </div>
-    </div>
-    <div id="player"></div>
-
-    <!-- Add the instructions link here -->
-    <div id="instructions-link">
-      <a href="instructions.html" target="_blank">Instructions</a>
-    </div>
-  </body>
+    <br />
+    <button id="forfeit">Forfeit</button>
+  </div>
+  <br/>
+  <div id="results-container">
+    <div id="results"></div>
+  </div>
+</div>
+<div id="player">
+  <button id="reroll">Re-roll</button>
+</div>
+</body>
 </html>
