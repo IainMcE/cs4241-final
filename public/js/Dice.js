@@ -29,6 +29,7 @@ let roll = [];
 
 window.addEventListener('DOMContentLoaded', async () => {
 	document.getElementById("reroll").onclick = rollDice;
+	//on game state = rolling: render
 	initialize();
 });
 
@@ -55,9 +56,9 @@ function initialize() {
 		Dice.push(makeDie(i));
 		waitGetRoll(i);
 	}
-	rollDice();
+	//rollDice();
 
-	render();
+	//render();
 }
 function WindowResize() {
 	camera.aspect = container.scrollWidth / setHeight;
@@ -218,6 +219,8 @@ function checkRolls(){
 	document.getElementById("reroll").disabled = true;
 	showControls();
 	//TODO send Dice
+	const body = JSON.stringify(roll)
+	fetch("/app/api/diceRoll", {method:'POST', body}).then();
 	document.getElementById("results").innerHTML = "Your roll: "+roll.toString();
 }
 
@@ -237,6 +240,10 @@ function rollDice(){
 		);
 		Dice[i].body.allowSleep = true;
 	}
+}
+
+export function startRolling(){
+	render();
 }
 
 function render() {

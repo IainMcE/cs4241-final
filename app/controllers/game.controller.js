@@ -5,6 +5,7 @@ var summary = [];
 var activePlayers = 0;
 var currentBid = [-1, -1, -1]
 var dice = []
+var state = "start"
 
 export function init(req, res) {
     let numPlayers = parseInt(req.body.numPlayers)
@@ -218,6 +219,27 @@ export function status(req, res) {
     res.writeHead( 200, "OK", {'Content-Type': 'text/plain' })
     const jsonContent = JSON.stringify(players);
     res.end(jsonContent)
+    return;
+}
+
+export function getGameState(req, res) {
+    res.writeHead( 200, "OK", {'Content-Type': 'text/plain' })
+    console.log("get state: "+state)
+    const jsonContent = JSON.stringify({State: state});
+    res.end(jsonContent)
+    return;
+}
+
+export function setGameState(req, res) {
+    console.log(req);
+    state = req.body;
+    console.log("set state to: "+state)
+    res.writeHead( 200, "OK", {'Content-Type': 'text/plain' })
+    res.end()
+    var Element = {}
+    Element.action = 'set state to roll'
+    Element.playerId = 0
+    summary.push(Element)
     return;
 }
 

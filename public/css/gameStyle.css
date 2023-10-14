@@ -30,8 +30,6 @@ body {
   align-items: center;
   width: 100%;
   margin-top: 0.5rem;
-  visibility: hidden;
-  z-index: -1;
 }
 
 #results-container {
@@ -54,8 +52,9 @@ body {
   border: 2px solid #ccc;
   border-radius: 6px;
   background-color: #fff;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  /*box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);*/
   height: auto;
+  visibility: hidden;
 }
 
 button,
@@ -90,6 +89,7 @@ input {
   text-transform: uppercase;
   letter-spacing: 0.5px;
   margin-top: 1rem;
+  visibility: hidden;
 }
 
 button#reroll {
@@ -103,4 +103,9 @@ button#reroll {
 
 button#reroll:hover {
   background-color: #45a049;
+}
+
+#results{
+  font-size: large;
+  font-weight: bold;
 }

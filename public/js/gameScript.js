@@ -1,27 +1,116 @@
-const numPlayers = 5;
-const opponentLostDice = [2,5,3,1];
-const numDice = 5;
+let numPlayers;
+let opponentDice;
+let numDice;
 const dieSize = 6;
 const playerDice = [];
-const previousCall = [0,1];
+const previousCall = [0, 1];
+let playerID;
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+function init(){
+	playerID = parseInt(sessionStorage.getItem("Id"));
+	//get numPlayers, and lostDice
+	getData().then(r => {
+		roundStart();
+	});
+	//hide everything (controls, buttons)
+	if(playerID===0){
+		//show start game button
+		let startButton = document.createElement('button');
+		startButton.onclick = gameStateRoll;
+		startButton.innerText = "Start the Game";
+		document.getElementById("prevCall").append(startButton);
+	}else{
+		//busyWaitForRoll().then(r => {});
+	}
+}
+
+async function getData(){
+	const response = await fetch("/api/game/status", {method:'GET'});
+	opponentDice = [];
+	const playerDice = await response.json();
+	for(let i = 0; i<playerDice.length; i++){
+		if(i===playerID){
+			numDice = playerDice[i];
+		}else{
+			if(playerDice[i]>-1) {
+				opponentDice.push(playerDice[i]);
+			}
+		}
+	}
+	numPlayers = opponentDice.length+1;
+}
+
+function gameStateRoll(){
+	getData().then(async r => {
+		if (numPlayers > 1) {
+			document.getElementById("prevCall").innerHTML = '';
+			const body = "roll"
+			console.log(body);
+			await fetch('/api/game/setGameState', {method:'POST', body});
+			//await busyWaitForRoll();
+			setRolling();
+		} else {
+			alert("Please wait for another player");
+		}
+	});
+}
+
+async function busyWaitForRoll() {
+	let state = "start";
+	while (state !== "roll") {
+		const response = await fetch('/api/game/getGameState', {method:'GET'});
+		const intermediary = response.json();
+		state = intermediary.State;
+		await sleep(1000);
+		console.log(state)
+	}
+	setRolling();
+}
+
+function setRolling(){
+	document.getElementById("player").style.visibility = "visible";
+}
 
 function roundStart(){
-	/*
-	 * How does client get data for all players?
-	 * If the player data is stored in the DB, do you need an API to get player data?
-	 * For example, getAllData will return a JSON with all players' data (GET)
-	 * getPlayerData with the player ID will return one player's data (POST)
-	 */
 	//set opponents
 	for(let i = 0; i<numPlayers-1; i++){
 		let opponentField = document.getElementById("opponent"+i);
-		let dieString = "./resources/"+(numDice-opponentLostDice[i])+".png";
+		let dieString = "./resources/"+(opponentDice[i])+".png";
 		opponentField.innerHTML = "Dice in play: <br/><img src='"+dieString+
-			"' height='75px'> <br>Lost Dice: "+opponentLostDice[i];
+			"' height='75px'> <br>Lost Dice: "+(numDice-opponentDice[i]);
+	}
+}
+
+function startCall(){
+	if(previousCall[0]!==0){
+		let plural = '';
+		if(previousCall[0]>0) plural = 's';
+		document.getElementById("prevCall").innerHTML = "Previous call: "+previousCall[0]+" "+toWord(previousCall[1])+plural;
+		document.getElementById("challenge").visibility = 'visible';
 	}
 	//set self
 	document.getElementById("count").value = previousCall[0]+1;
 	document.getElementById("dieSide").value = previousCall[1];
+}
+
+function toWord(i){
+	switch (i){
+		case 1:
+			return "One";
+		case 2:
+			return "Two";
+		case 3:
+			return "Three";
+		case 4:
+			return "Four";
+		case 5:
+			return "Five";
+		case 6:
+			return "Six";
+		default:
+			return i;
+	}
 }
 
 function increment(field, positivity){
@@ -53,19 +142,4 @@ function updateButtons(){
 	if(currSide <= previousCall[1] && currNum<=previousCall[0]){
 		document.getElementById('count').value = previousCall[0]+1;
 	}
-
-	/*
-	 * After each player action, do you want the server to validate?
-	 * That means you need a POST api such as /api/game/playerMove with whatever you need to validate
-	 * This may not need to be stored in the DB, it can be stored in the server as long as the server knows when the round starts and ends.
-	 */
-	//TODO serverside validation: so long as either value is larger than the previous and die side is not smaller than the previous side, it is valid
 }
-
-/*
- * Other questions:
- * 1. Will the server api be called after each round?
- * 2. How does the client know whether the player has won or lost a round?
- * 3. How does the client know that a player has lost all dice?
- * 4. Does the server need to assume the number of players as 5 and number of dice as 5?
- */

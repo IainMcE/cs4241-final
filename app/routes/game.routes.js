@@ -9,6 +9,8 @@ import {join} from '../controllers/game.controller.js';
 import {placeBid} from '../controllers/game.controller.js';
 import {diceRoll} from '../controllers/game.controller.js';
 import {forfeit} from '../controllers/game.controller.js';
+import {setGameState} from '../controllers/game.controller.js';
+import {getGameState} from '../controllers/game.controller.js';
 
 
 const router = express.Router()
@@ -28,6 +30,8 @@ router.post("/api/game/placeBid", placeBid);
 router.post("/api/game/diceRoll", diceRoll);
 router.post("/api/game/forfeit", forfeit);
 router.get("/api/game/status", status);
+router.get("/api/game/getGameState", getGameState);
+router.post("/api/game/setGameState", setGameState);
 router.get("/api/game/summary", gameSummary);
 router.get("/api/game/join", join);
 
